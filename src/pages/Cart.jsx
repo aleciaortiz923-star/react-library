@@ -1,6 +1,14 @@
 import React from 'react';
+import EmptyCart from '../assets/empty_cart.svg';
+import { Link } from 'react-router-dom';
 
-const Cart = () => {
+const Cart = ({ cart, changeQuantity, removeItem }) => {
+    const total = cart.reduce((total, book) => total + book.quantity, 0);
+    const subTotal = cart.reduce((total, book) => {
+        return total + (book.salePrice || book.originalPrice) * book.quantity;
+    }, 0);
+
+    const tax = subTotal * 0.08;
   return (
    <div id="books__body">
     <main id="books__main">
@@ -18,52 +26,68 @@ const Cart = () => {
                         <span className="cart__total">Price</span>
                     </div>
                     <div className="cart__body">
-                        <div className="cart__item">
+                        {
+                            cart.map(book => {
+                                return(
+                                       <div className="cart__item">
                             <div className="cart__book">
                                 <img 
-                                src= "https://m.media-amazon.com/images/I/61mIq2iJUXL._AC_UF1000,1000_QL80_.jpg" 
+                                src= {book.url} 
                                 className="cart__book--img" 
                                 alt="" 
                                 />
                                 <div className="cart__book--info">
                                     <span className="cart__book--title">
-                                        Crack the code interviewing
+                                        {book.title}
                                     </span>
                                     <span className="cart__book--price">
-                                        $19.99
+                                        ${( book.salePrice || book.originalPrice).toFixed(2)}
                                     </span>
-                                    <button className="cart__book--remove">
+                                    <button className="cart__book--remove" onClick={() => removeItem(book.id, 0)}>
                                         Remove
                                     </button>
                                 </div>
                             </div>
                             <div className="cart__quantity">
-                                <input type="number"  min={0} max={99} className="cart__input"/>
+                                <input type="number"  min={0} max={99} className="cart__input" 
+                                value={book.quantity}
+                                onChange={(e) => changeQuantity(book.id, parseInt(e.target.value))}/>
                             </div>
                             <div className="cart__total">
-                                $19.99
+                                ${((book.salePrice || book.originalPrice) * book.quantity) .toFixed(2)}
                             </div>
                         </div>
+                                )
+                            })
+                        }
+                     
+                    </div>
+                    <div className="cart__empty">
+                        <img src={EmptyCart}alt="" className="cart__empty--img" />
+                        <h2 className="cart__empty--title">You don't have any books in your cart!</h2>
+                        <Link to="/books">
+                        <button className="btn">Browse books</button>
+                        </Link>
                     </div>
                 </div>
-                <div className="total">
+               { cart.length > 0  && <div className="total">
                     <div className="total__item total__sub-total">
                         <span>Subtotal</span>
-                        <span>$19.99</span>
+                        <span>${subTotal.toFixed(2)}</span>
                     </div>
                     <div className="total__item total__tax">
                         <span>Tax</span>
-                        <span>$1.60</span>
+                        <span>${tax.toFixed(2)}</span>
                     </div>
                     <div className="total__item total__price">
                         <span>Total</span>
-                        <span>$21.59</span>
+                        <span>${(subTotal + tax).toFixed(2)}</span>
                     </div>
                     <button className="btn btn__checkout no-cursor"
                     onClick={() => alert(`Haven't gotten aroud to doing this :(`)}>
                         Procceed to checkout
                     </button>
-                </div>
+                </div>}
             </div>
         </div>
     </main>

@@ -5,9 +5,9 @@ import Rating from '../components/ui/Rating';
 import Price from '../components/ui/Price';
 import Book from '../components/ui/Book';
 import { useState } from 'react';
-import Cart from '../pages/Cart';
 
-const BooksInfo = ({ books, addToCart }) => {
+
+const BooksInfo = ({ books, addToCart, cart }) => {
     const { id } = useParams();
     const book = books.find(book => +book.id === +id);
     
@@ -18,7 +18,7 @@ const BooksInfo = ({ books, addToCart }) => {
     }
 
     function bookExistsOnCart() {
-        return Cart.find(book => book.id === +id)
+        return cart.find(book => book.id === +id)
     }
 
   return (

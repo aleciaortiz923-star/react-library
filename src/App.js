@@ -33,6 +33,10 @@ function App() {
     );
   };
 
+  function removeItem(id) {
+    setCart(cart.filter(book => book.id !== id));
+  };
+
   return (
     <Router>
     <div className="App">
@@ -43,7 +47,7 @@ function App() {
     <Route path="/books/:id" element={<BooksInfo books={books} 
     addToCart={addToCart} cart={cart} />} />
     <Route path="/cart" element={<Cart books={books} cart={cart}
-    changeQuantity={changeQuantity} />} />
+    changeQuantity={changeQuantity} removeItem={removeItem} />} />
    
    
 
