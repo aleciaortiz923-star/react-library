@@ -3,7 +3,7 @@ import EmptyCart from '../assets/empty_cart.svg';
 import { Link } from 'react-router-dom';
 
 const Cart = ({ cart, changeQuantity, removeItem }) => {
-    const total = cart.reduce((total, book) => total + book.quantity, 0);
+    
     const subTotal = cart.reduce((total, book) => {
         return total + (book.salePrice || book.originalPrice) * book.quantity;
     }, 0);
@@ -53,10 +53,9 @@ const Cart = ({ cart, changeQuantity, removeItem }) => {
                                 value={book.quantity}
                                 onChange={(e) => changeQuantity(book.id, parseInt(e.target.value))}/>
                             </div>
-                            <div className="cart__total">
-                                ${((book.salePrice || book.originalPrice) * book.quantity) .toFixed(2)}
+                            <div className="cart__total"> ${((book.salePrice || book.originalPrice) * book.quantity).toFixed(2)}</div>
                             </div>
-                        </div>
+                        
                                 )
                             })
                         }
